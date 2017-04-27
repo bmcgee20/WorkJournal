@@ -202,10 +202,16 @@ public class AddEntryScreen {
 		f.pack();
 		f.setLocationRelativeTo(null);
 		f.setVisible(true);//making the frame visible 
-	//Listeners
+	//Listener
 		ButSubmit.addActionListener(new ActionListener(){ //when click submit do these things
 			public void actionPerformed(ActionEvent e){
 				if(SubmitCheck()){//If input is clean
+					if(FieldTitle.getText().length()==0){
+						FieldTitle.setText(LabTitle.getText());
+					}
+					else{
+						FieldTitle.setText(FieldTitle.getText()+": "+LabTitle.getText());
+					}
 					//db.uploadactivity
 					Date now = new Date();
 					float time =now.getTime();

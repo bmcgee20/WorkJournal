@@ -18,19 +18,21 @@ public class ViewEntriesScreen extends JFrame{
 	JPanel innerpanel = new JPanel();
 	JLabel bob = new JLabel("Bob");
 	JButton butspawn = new JButton("Turn on");
-	
+	JButton butunder = new JButton("Tester");
+	int i=0;
 	ViewEntriesScreen(DataBaseHelper db){
 		//Layout
-		innerpanel.add(bob);
 		panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
-		
-
 		panel.add(butspawn);
 		panel.add(innerpanel);
 		innerpanel.setVisible(false);
 		ArrayList<JPanel> lister = new ArrayList<>();
 		lister =db.GetEntries();
-		
+		while(lister.size()!=i){
+			innerpanel.add(lister.get(i));
+			i++;
+		}
+		panel.add(butunder);
 		butspawn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				//Open up a add entry screen

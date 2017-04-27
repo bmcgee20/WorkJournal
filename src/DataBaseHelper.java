@@ -1,4 +1,6 @@
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -127,44 +129,74 @@ public class DataBaseHelper {
 	 * 
 	 */
 	public ArrayList<JPanel> GetEntries(){
-		String command = "SELECT * FROM EntryTable WHERE Username = ?";
+		String command = "SELECT * FROM EntryTable WHERE Username = ? ORDER BY time DESC;";
+		ArrayList<JPanel> PanelList = new ArrayList<>();
 		try(Connection conn = this.dbConnector();
 			PreparedStatement state = conn.prepareStatement(command)){
 			state.setString(1, DataBaseHelper.currentUser);
 			ResultSet result = state.executeQuery();
 			
-			while(result.next()){//sort result set into arraylist of entries
-				System.out.println("Entering the shit");
+			while(result.next()){//make panels for each result
+				System.out.println("Desc is "+result.getString("Desc"));
+				JPanel panel = new JPanel();
+				panel.setLayout(new GridBagLayout());
+				GridBagConstraints gc = new GridBagConstraints();
+				int y = 0;
+				gc.anchor = GridBagConstraints.WEST;
+				JLabel WordDesc = new JLabel("<u>Description:</u>");
+				gc.gridx=0;
+				gc.gridy=0;
+				panel.add(WordDesc,gc);
 
-				System.out.println("Username is "+result.getString("Username"));
+				JLabel Desc = new JLabel(result.getString("Desc"));
+				gc.gridx=0;
+				gc.gridy=1;
+				panel.add(Desc,gc);
+				
+				y=2;
+				if(result.getString("Issues").length()!=0){ //check if not mandatory field are put in
+					JLabel Iss = new JLabel("Issues:");
+					gc.gridx=0;
+					gc.gridy=2;
+					panel.add(Iss,gc);
+					
+					JLabel Issues = new JLabel(result.getString("Issues"));
+					gc.gridx=0;
+					gc.gridy=3;
+					panel.add(Issues,gc);
+					y=4; //change the grid height dynamically based on what it added or not
+				}
+				
+				JLabel Project = new JLabel("Project: " +result.getString("ProjectName"));
+				gc.gridx=0;
+				gc.gridy=y;
+				panel.add(Project,gc);
+				y++;
+				
+				JLabel Hours = new JLabel("Hours: "+ result.getString("Hours"));
+				gc.gridx=0;
+				gc.gridy=y;
+				panel.add(Hours,gc);
+				y++;
+				
+				JLabel Happy = new JLabel("Fulfillment: "+result.getInt("Fulfillment"));
+				gc.gridx=0;
+				gc.gridy=y;
+				panel.add(Happy,gc);
+				y++;
+				
+				JLabel Programs = new JLabel("Programming Language Used: "+result.getString("Fulfillment"));
+				gc.gridx=0;
+				gc.gridy=y;
+				panel.add(Programs,gc);
+				
+				PanelList.add(panel);
 			}
-			System.out.println("Entering the out");
-
+			return PanelList;
 		}catch(SQLException e){
 			System.out.println(e.getMessage());
 			return null;
 		}		
-		return null;
-	}
-	
-	public ArrayList<JPanel> BuildEntriesPanel(ResultSet result){
-		System.out.println("Entering the entroieasdf");
-		try{
-			//put each entry into a ArrayList and then sort by date later
-			while(result.next()){//sort result set into arraylist of entries
-				//System.out.println("Entering the shit");
-				
-				System.out.println("Username is "+result.getString("Desc"));
-			}
-			System.out.println("Entering the out");
-
-		}catch(SQLException e){
-			System.out.println(e.getMessage());
-			return null;
-		}
-
-		
-		return null;
 	}
 	
 	public Connection getDB(){

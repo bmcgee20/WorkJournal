@@ -3,16 +3,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class AddEntryScreen {
-	Date currentDate = new Date();
-	SimpleDateFormat dateFormatted = new SimpleDateFormat("E MM/dd/yyyy");
 //Java swing elements (their is quite a bit but this is the only data entry screen)
 	//Labels
-	JLabel LabTitle = new JLabel("Entry "+dateFormatted+": ");
+	JLabel LabTitle = new JLabel();
 	JLabel LabDesc = new JLabel("*Describe Today: ");
 	JLabel LabIssues = new JLabel("Issues: ");
 	JLabel LabProject = new JLabel("*Project Name: ");
@@ -21,7 +22,8 @@ public class AddEntryScreen {
 	JLabel LabLanguage = new JLabel("Programming Language Used: ");
 	JLabel LabCoworkers = new JLabel("Coworkers: ");
 	JLabel LabTitleField = new JLabel("Title of Entry: ");
-	JLabel ErrorMsg = new JLabel();
+	JLabel ErrorMsg = new JLabel(" ");
+	
 	//Fields
 	JTextArea FieldDescription = new JTextArea(5,30);
 	JScrollPane FieldDesc = new JScrollPane(FieldDescription); //puts it in a scroll text
@@ -42,9 +44,14 @@ public class AddEntryScreen {
 	JPanel PanCapsule = new JPanel(); // encapsulated both right and left
 	//frame
 	JFrame f = new JFrame();
+	//database
+	DataBaseHelper db = new DataBaseHelper();
+	
+	
 //Methods
 	AddEntryScreen(){
     //Panel left setup
+		db.dbConnector();//connect the database variable with db
 		//set up the scroll pane
 		FieldDescription.setWrapStyleWord(true); //description scroll bar set up
 		FieldDescription.setLineWrap(true);
@@ -59,6 +66,12 @@ public class AddEntryScreen {
 		SliderHappy.setMajorTickSpacing(1);
 		SliderHappy.setSnapToTicks(true);
 		SliderHappy.setPaintLabels(true);
+		//error red
+		ErrorMsg.setForeground(Color.red);
+		//get date
+		SimpleDateFormat dateForm = new SimpleDateFormat("MM/dd/yyyy");
+		String date = dateForm.format(new Date());
+		LabTitle.setText("Entry "+date+":");
 		
 		//pick layout type
 		PanLeft.setLayout(new GridBagLayout());
@@ -66,7 +79,8 @@ public class AddEntryScreen {
 		//set up each grid component
 		gc.gridx= 0;
 		gc.gridy = 0;
-		gc.anchor = GridBagConstraints.WEST;
+		gc.insets = new Insets(0,0,0,0);
+		gc.anchor = GridBagConstraints.NORTHWEST;
 		PanLeft.add(LabDesc,gc);
 		
 		Insets normal = new Insets(10,10,10,10);
@@ -114,60 +128,73 @@ public class AddEntryScreen {
 	//Panel Right setup
 		PanRight.setLayout(new GridBagLayout());
 		GridBagConstraints gd = new GridBagConstraints();
-		gd.gridx = 0;
-		gd.gridy= 0;
-		gd.insets = normal;
-		gd.anchor = GridBagConstraints.WEST;
-		PanRight.add(LabHappy, gd);
-		
-		gd.gridx=1;
-		gd.gridy =0;
-		gd.insets = normal;
-		PanRight.add(SliderHappy, gd);
-		
+		Insets left = new Insets(10,10,0,0);
+		Insets right = new Insets(10,5,0,0);
 		gd.gridx=0;
-		gd.gridy=1;
+		gd.gridy=0;
+		gd.insets = left;
 		gd.anchor = GridBagConstraints.WEST;
 		PanRight.add(LabLanguage, gd);
 		
 		gd.gridx=1;
-		gd.gridy=1;
+		gd.gridy=0;
+		gd.insets = right;
 		PanRight.add(FieldProgramLang,gd);
 		
 		gd.gridx=0;
-		gd.gridy=2;
+		gd.gridy=1;
+		gd.insets = left;
 		gd.anchor = GridBagConstraints.WEST;
 		PanRight.add(LabCoworkers,gd);
 		
 		gd.gridx=1;
-		gd.gridy=2;
+		gd.gridy=1;
+		gd.insets = right;
 		PanRight.add(FieldCoWorkers,gd);
 		
 		gd.gridx = 0;
-		gd.gridy = 3;
+		gd.gridy = 2;
+		gd.insets = left;
 		gd.anchor = GridBagConstraints.WEST;
 		PanRight.add(LabTitleField,gd);
 		
 		gd.gridx=1;
-		gd.gridy=3;
+		gd.gridy=2;
+		gd.insets = right;
 		PanRight.add(FieldTitle,gd);
+		
+		gd.gridx = 0;
+		gd.gridy= 3;
+		gd.insets = left;
+		gd.anchor = GridBagConstraints.WEST;
+		PanRight.add(LabHappy, gd);
+		
+		gd.gridx=1;
+		gd.gridy =3;
+		gd.insets = right;
+		PanRight.add(SliderHappy, gd);
+		
 		
 		gd.gridx =0;
 		gd.gridy=4;
-		gc.anchor= GridBagConstraints.SOUTHWEST;
+		gd.insets = new Insets(30,0,0,0);
+		gd.weightx=1;
+		gd.gridwidth=2;
+		gd.anchor= GridBagConstraints.CENTER;
 		PanRight.add(ErrorMsg,gd);
 		
 		gd.gridx=0;
 		gd.gridy=5;
 		gd.gridwidth=2;
 		gd.anchor = GridBagConstraints.SOUTHEAST;
-		gd.insets = new Insets(10,5,0,0);
+		gd.insets = new Insets(10,5,20,0);
 		PanRight.add(ButSubmit,gd);
 	//Encapsulating 
 		PanCapsule.setBorder(BorderFactory.createTitledBorder(""));
 		PanCapsule.setLayout(new FlowLayout());
 		PanCapsule.add(PanLeft);
 		PanCapsule.add(PanRight);
+		PanCapsule.setBorder(BorderFactory.createTitledBorder(LabTitle.getText()));
 		f.add(PanCapsule);
 		//f.add(PanLeft);
 		//f.add(PanRight);
@@ -180,6 +207,11 @@ public class AddEntryScreen {
 			public void actionPerformed(ActionEvent e){
 				if(SubmitCheck()){//If input is clean
 					//db.uploadactivity
+					int hours = Integer.parseInt(FieldHours.getText());
+					boolean completed= db.AddEntry(WelcomeMenuScreen.username, FieldDescription.getText(), FieldIssues.getText()
+							, FieldProject.getText(), hours, SliderHappy.getValue(), FieldProgramLang.getText(),
+							FieldCoWorkers.getText(), FieldTitle.getText());
+					System.out.println(completed);
 					f.setVisible(false);
 					WelcomeMenuScreen backWindow = new WelcomeMenuScreen();
 				}

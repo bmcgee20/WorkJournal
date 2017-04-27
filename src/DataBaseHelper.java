@@ -24,6 +24,10 @@ public class DataBaseHelper {
 			return null;
 		}
 	}
+	/*
+	 * 
+	 * Login Database Methods
+	 */
 	//adds user to the database
 	public boolean AddUser(String username,String password){
 		String command = "INSERT INTO LoginInfo(Username,Password) VALUES(?,?)";
@@ -84,6 +88,35 @@ public class DataBaseHelper {
 			System.out.println(e.getMessage());
 		}
 		return false;
+	}
+	/*
+	 * 
+	 * AddEntryScreen database methods
+	 * 
+	 */
+	public boolean AddEntry(String username, String desc,String issues, String project, int hours, int happy, String program, String coworkers,
+							String title){
+		String command = "INSERT INTO EntryTable(Username,Desc,Issues,ProjectName,Hours,Fulfillment,ProgramUsed,Coworkers,PostTitle) VALUES(?,?,?,?,?,?,?,?,?)";
+		//check for duplicates
+		try(Connection conn = this.dbConnector();
+				PreparedStatement state = conn.prepareStatement(command)){
+			state.setString(1, username);
+			state.setString(2, desc);
+			state.setString(3, issues);
+			state.setString(4, project);
+			state.setInt(5, hours);
+			state.setInt(6, happy);
+			state.setString(7, program);
+			state.setString(8, coworkers);
+			state.setString(9, title);
+			state.executeUpdate();	
+			return true;
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+			return false;
+		}
+		
+		
 	}
 	
 	public Connection getDB(){

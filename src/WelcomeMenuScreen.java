@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 public class WelcomeMenuScreen {
+	static String username;
 	JFrame f = new JFrame();
 		
 	JPanel PanWelcomeMenu = new JPanel(); //set border text later to welcome username
@@ -12,6 +13,10 @@ public class WelcomeMenuScreen {
 	JButton ButViewData = new JButton("View Data");
 	
 	WelcomeMenuScreen(){
+		this(username); //will always have username defined from login so just call normal
+	}
+	WelcomeMenuScreen(String user){
+		username= user;
 		//Grab username from database
 		PanWelcomeMenu.setBorder(BorderFactory.createTitledBorder("Welcome Username"));
 		//Listeners
@@ -64,4 +69,5 @@ public class WelcomeMenuScreen {
 		f.setLocationRelativeTo(null);
 		f.setVisible(true);//making the frame visible 
 	}
+
 }

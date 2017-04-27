@@ -3,6 +3,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 import java.sql.Connection;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 import java.sql.*;
 
@@ -31,6 +33,14 @@ public class LoginWindow extends JFrame{
 
 	
 	LoginWindow(){
+
+
+		/*try { 
+		    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		*/
 		//DB
 		db.conn = db.dbConnector();
 		
@@ -88,6 +98,7 @@ public class LoginWindow extends JFrame{
 		gc.gridx=1;
 		gc.gridy = 2;
 		gc.weightx =1;
+		//gc.insets = new Insets(20,5,5,0);
 		gc.anchor = GridBagConstraints.EAST;
 		panel.add(ButEnter, gc);
 		
@@ -108,6 +119,7 @@ public class LoginWindow extends JFrame{
 		
 	
 	
+		
 	}
 	//Listener methods
 	public void AddUser(){ //method used in button and on enter in either textfields
@@ -132,7 +144,7 @@ public class LoginWindow extends JFrame{
 		System.out.println(String.valueOf(FieldPassword.getPassword()));
 		if(db.CheckLoginAccount(FieldUsername.getText(),String.valueOf(FieldPassword.getPassword()))){
 			f.setVisible(false);
-			WelcomeMenuScreen Menu = new WelcomeMenuScreen();
+			WelcomeMenuScreen Menu = new WelcomeMenuScreen(FieldUsername.getText());
 		}
 		else{
 			LabError.setText("Username & Password Combo Wrong");
@@ -141,6 +153,17 @@ public class LoginWindow extends JFrame{
 	}
 	
 	public static void main(String[] args){
+		try{
+		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+		        if ("Nimbus".equals(info.getName())) {
+		            UIManager.setLookAndFeel(info.getClassName());
+		            break;
+		        }
+		    }
+		} catch (Exception e) {
+			// If Nimbus is not available, you can set the GUI to another look and feel.
+		}
+	
 		SwingUtilities.invokeLater(new Runnable(){//just needed for swing
 			public void run(){
 				new LoginWindow();

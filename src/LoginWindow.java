@@ -23,8 +23,8 @@ public class LoginWindow extends JFrame{
 	JLabel LabUsername = new JLabel("Username: ");
 	JLabel LabPassword = new JLabel("Password: ");
 	static JLabel LabError = new JLabel("Error your username was not found");
-	JPasswordField FieldPassword = new JPasswordField(null,15);
-	JTextField FieldUsername = new JTextField(15);
+	JPasswordField FieldPassword = new JPasswordField("password",15);
+	JTextField FieldUsername = new JTextField("user",15);
 	JButton ButEnter = new JButton("Enter");
 	JButton ButCreate = new JButton("Create User");
 	DataBaseHelper db = new DataBaseHelper();

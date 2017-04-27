@@ -12,13 +12,11 @@ public class WelcomeMenuScreen {
 	JButton ButViewEntry = new JButton("View Entries");
 	JButton ButViewData = new JButton("View Data");
 	
-	WelcomeMenuScreen(){
-		this(username); //will always have username defined from login so just call normal
-	}
-	WelcomeMenuScreen(String user){
-		username= user;
+
+	WelcomeMenuScreen(final DataBaseHelper db){
 		//Grab username from database
-		PanWelcomeMenu.setBorder(BorderFactory.createTitledBorder("Welcome Username"));
+		
+		PanWelcomeMenu.setBorder(BorderFactory.createTitledBorder("Welcome "+DataBaseHelper.currentUser));
 		//Listeners
 		ButAddEntry.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -31,7 +29,8 @@ public class WelcomeMenuScreen {
 		ButViewEntry.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				//Open up the view entry screen
-				
+				f.setVisible(false);
+				ViewEntriesScreen EntryWindow = new ViewEntriesScreen(db);
 						
 			}
 		});

@@ -144,7 +144,7 @@ public class LoginWindow extends JFrame{
 		System.out.println(String.valueOf(FieldPassword.getPassword()));
 		if(db.CheckLoginAccount(FieldUsername.getText(),String.valueOf(FieldPassword.getPassword()))){
 			f.setVisible(false);
-			WelcomeMenuScreen Menu = new WelcomeMenuScreen(FieldUsername.getText());
+			WelcomeMenuScreen Menu = new WelcomeMenuScreen(db);
 		}
 		else{
 			LabError.setText("Username & Password Combo Wrong");
@@ -153,7 +153,7 @@ public class LoginWindow extends JFrame{
 	}
 	
 	public static void main(String[] args){
-		try{
+		try{ //changes the look of the application style
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 		        if ("Nimbus".equals(info.getName())) {
 		            UIManager.setLookAndFeel(info.getClassName());
@@ -161,7 +161,7 @@ public class LoginWindow extends JFrame{
 		        }
 		    }
 		} catch (Exception e) {
-			// If Nimbus is not available, you can set the GUI to another look and feel.
+			System.out.println("Could not find Nimbus will just use default");
 		}
 	
 		SwingUtilities.invokeLater(new Runnable(){//just needed for swing

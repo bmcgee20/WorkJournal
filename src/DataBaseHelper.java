@@ -1,10 +1,12 @@
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
 public class DataBaseHelper {
 	public Connection conn = null;
+	public static String currentUser=null;
 	public Connection dbConnector(){
 		try{
 			Class.forName("org.sqlite.JDBC");
@@ -81,6 +83,7 @@ public class DataBaseHelper {
 				return false;
 			}
 			else{
+				this.currentUser = username;
 				return true;
 			}
 				
@@ -95,8 +98,8 @@ public class DataBaseHelper {
 	 * 
 	 */
 	public boolean AddEntry(String username, String desc,String issues, String project, int hours, int happy, String program, String coworkers,
-							String title){
-		String command = "INSERT INTO EntryTable(Username,Desc,Issues,ProjectName,Hours,Fulfillment,ProgramUsed,Coworkers,PostTitle) VALUES(?,?,?,?,?,?,?,?,?)";
+							String title, float time){
+		String command = "INSERT INTO EntryTable(Username,Desc,Issues,ProjectName,Hours,Fulfillment,ProgramUsed,Coworkers,PostTitle, Time) VALUES(?,?,?,?,?,?,?,?,?,?)";
 		//check for duplicates
 		try(Connection conn = this.dbConnector();
 				PreparedStatement state = conn.prepareStatement(command)){
@@ -109,6 +112,7 @@ public class DataBaseHelper {
 			state.setString(7, program);
 			state.setString(8, coworkers);
 			state.setString(9, title);
+			state.setFloat(10, time);
 			state.executeUpdate();	
 			return true;
 		}catch(SQLException e){
@@ -118,8 +122,53 @@ public class DataBaseHelper {
 		
 		
 	}
+	/*
+	 * View Entry Screen methods
+	 * 
+	 */
+	public ArrayList<JPanel> GetEntries(){
+		String command = "SELECT * FROM EntryTable WHERE Username = ?";
+		try(Connection conn = this.dbConnector();
+			PreparedStatement state = conn.prepareStatement(command)){
+			state.setString(1, DataBaseHelper.currentUser);
+			ResultSet result = state.executeQuery();
+			
+			while(result.next()){//sort result set into arraylist of entries
+				System.out.println("Entering the shit");
+
+				System.out.println("Username is "+result.getString("Username"));
+			}
+			System.out.println("Entering the out");
+
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+			return null;
+		}		
+		return null;
+	}
+	
+	public ArrayList<JPanel> BuildEntriesPanel(ResultSet result){
+		System.out.println("Entering the entroieasdf");
+		try{
+			//put each entry into a ArrayList and then sort by date later
+			while(result.next()){//sort result set into arraylist of entries
+				//System.out.println("Entering the shit");
+				
+				System.out.println("Username is "+result.getString("Desc"));
+			}
+			System.out.println("Entering the out");
+
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+			return null;
+		}
+
+		
+		return null;
+	}
 	
 	public Connection getDB(){
 		return conn;
 	}
+	
 }

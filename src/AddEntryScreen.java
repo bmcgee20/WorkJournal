@@ -207,13 +207,16 @@ public class AddEntryScreen {
 			public void actionPerformed(ActionEvent e){
 				if(SubmitCheck()){//If input is clean
 					//db.uploadactivity
+					Date now = new Date();
+					float time =now.getTime();
+					System.out.println(time);
 					int hours = Integer.parseInt(FieldHours.getText());
-					boolean completed= db.AddEntry(WelcomeMenuScreen.username, FieldDescription.getText(), FieldIssues.getText()
+					boolean completed= db.AddEntry(DataBaseHelper.currentUser, FieldDescription.getText(), FieldIssues.getText()
 							, FieldProject.getText(), hours, SliderHappy.getValue(), FieldProgramLang.getText(),
-							FieldCoWorkers.getText(), FieldTitle.getText());
+							FieldCoWorkers.getText(), FieldTitle.getText(), time);
 					System.out.println(completed);
 					f.setVisible(false);
-					WelcomeMenuScreen backWindow = new WelcomeMenuScreen();
+					WelcomeMenuScreen backWindow = new WelcomeMenuScreen(db);
 				}
 			}
 		});

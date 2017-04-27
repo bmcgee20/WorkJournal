@@ -39,50 +39,23 @@ public class LoginWindow extends JFrame{
 		//Listeners
 		FieldPassword.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				//submit data
-				LabError.setText("Enter worked");
-						
+				LoginListen();//enter in the username field will login
 			}
 		});
 
 		FieldUsername.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				//submit data
-				LabError.setText("Enter worked");
-						
+				LoginListen();//enter in password field will login
 			}
 		});
 		ButEnter.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				System.out.println(String.valueOf(FieldPassword.getPassword()));
-				if(db.CheckLoginAccount(FieldUsername.getText(),String.valueOf(FieldPassword.getPassword()))){
-					f.setVisible(false);
-					WelcomeMenuScreen Menu = new WelcomeMenuScreen();
-				}
-				else{
-					LabError.setText("Username & Password Combo Wrong");
-				}
-
+				LoginListen();//clicking enter will login
 			}
 		});
 		ButCreate.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				//check if both fields user and password are filled
-				if(FieldUsername.getText().length()!=0){
-					if(String.valueOf(FieldPassword.getPassword()).length()!=0){
-						//throw into the database and check for duplicates
-						boolean worked= db.AddUser(FieldUsername.getText(), String.valueOf(FieldPassword.getPassword()));
-						if(worked==false){
-							LabError.setText("Account already made");
-						}
-					}
-					else{
-						LabError.setText("Please Enter a Password.");
-					}
-				}
-				else{
-					LabError.setText("Please Enter a Username.");
-				}
+				AddUser(); //clicking create account will create account
 			}
 		});
 		//Layout
@@ -133,21 +106,41 @@ public class LoginWindow extends JFrame{
 		f.setLocationRelativeTo(null);
 		f.setVisible(true);//making the frame visible 
 		
+	
+	
 	}
-	public boolean AddUser(){
-
-				
-		return true;
-	}
-	public static void main(String[] args){
-/*
-		if(DataBaseHelper.GetDB() == null){
-			LabError.setText("Database Not Connected"); //will show user if the db is not there
+	//Listener methods
+	public void AddUser(){ //method used in button and on enter in either textfields
+		//check if both fields user and password are filled
+		if(FieldUsername.getText().length()!=0){
+			if(String.valueOf(FieldPassword.getPassword()).length()!=0){
+				//throw into the database and check for duplicates
+				boolean worked= db.AddUser(FieldUsername.getText(), String.valueOf(FieldPassword.getPassword()));
+				if(worked==false){
+					LabError.setText("Account already made");
+				}
+			}
+			else{
+				LabError.setText("Please Enter a Password.");
+			}
 		}
 		else{
-			System.out.println("Database connected"); //just for debuging will not show user
+			LabError.setText("Please Enter a Username.");
+		}		
+	}
+	public void LoginListen(){
+		System.out.println(String.valueOf(FieldPassword.getPassword()));
+		if(db.CheckLoginAccount(FieldUsername.getText(),String.valueOf(FieldPassword.getPassword()))){
+			f.setVisible(false);
+			WelcomeMenuScreen Menu = new WelcomeMenuScreen();
 		}
-*/	
+		else{
+			LabError.setText("Username & Password Combo Wrong");
+		}
+
+	}
+	
+	public static void main(String[] args){
 		SwingUtilities.invokeLater(new Runnable(){//just needed for swing
 			public void run(){
 				new LoginWindow();

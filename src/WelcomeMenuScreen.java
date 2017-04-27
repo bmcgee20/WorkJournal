@@ -39,7 +39,7 @@ public class WelcomeMenuScreen {
 		//Layout
 		PanWelcomeMenu.setLayout(new GridBagLayout());
 		GridBagConstraints gc = new GridBagConstraints();
-		Insets normal = new Insets(10,10,10,10);
+		Insets normal = new Insets(10,30,10,30);// top right bot left 
 		gc.gridx= 0;
 		gc.gridy = 0;
 		gc.fill = GridBagConstraints.BOTH;

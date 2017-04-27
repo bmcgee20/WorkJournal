@@ -21,7 +21,7 @@ public class AddEntryScreen {
 	JLabel LabLanguage = new JLabel("Programming Language Used: ");
 	JLabel LabCoworkers = new JLabel("Coworkers: ");
 	JLabel LabTitleField = new JLabel("Title of Entry: ");
-	JLabel ErrorMsg = new JLabel("ErrorMsg");
+	JLabel ErrorMsg = new JLabel();
 	//Fields
 	JTextArea FieldDescription = new JTextArea(5,30);
 	JScrollPane FieldDesc = new JScrollPane(FieldDescription); //puts it in a scroll text
@@ -152,10 +152,15 @@ public class AddEntryScreen {
 		gd.gridy=3;
 		PanRight.add(FieldTitle,gd);
 		
-		gd.gridx=0;
+		gd.gridx =0;
 		gd.gridy=4;
+		gc.anchor= GridBagConstraints.SOUTHWEST;
+		PanRight.add(ErrorMsg,gd);
+		
+		gd.gridx=0;
+		gd.gridy=5;
 		gd.gridwidth=2;
-		gd.anchor = GridBagConstraints.EAST;
+		gd.anchor = GridBagConstraints.SOUTHEAST;
 		gd.insets = new Insets(10,5,0,0);
 		PanRight.add(ButSubmit,gd);
 	//Encapsulating 
@@ -167,17 +172,35 @@ public class AddEntryScreen {
 		//f.add(PanLeft);
 		//f.add(PanRight);
 		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		//f.setSize(350,350);//400 width and 500 height  
 		f.pack();
 		f.setLocationRelativeTo(null);
 		f.setVisible(true);//making the frame visible 
-		
-		ButSubmit.addActionListener(new ActionListener(){
+	//Listeners
+		ButSubmit.addActionListener(new ActionListener(){ //when click submit do these things
 			public void actionPerformed(ActionEvent e){
-				//Open up a add entry screen
-				f.setVisible(false);
-				WelcomeMenuScreen backWindow = new WelcomeMenuScreen();
+				if(SubmitCheck()){//If input is clean
+					//db.uploadactivity
+					f.setVisible(false);
+					WelcomeMenuScreen backWindow = new WelcomeMenuScreen();
+				}
 			}
 		});
+	}
+	//Listener methods
+	private boolean SubmitCheck(){//checks required data is there and such before adding to database
+		if(FieldDescription.getText().length()==0){
+			Error("Description is required");
+			return false;
+		}else if(FieldProject.getText().length()==0){
+			Error("Project title not filled out");
+			return false;
+		}else if(FieldHours.getText().length()==0){
+			Error("Hours not filled out");
+			return false;
+		}
+		return true;
+	}
+	private void Error(String message){ //sets the error msg label to this text
+		ErrorMsg.setText(message);
 	}
 }

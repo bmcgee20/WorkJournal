@@ -3,6 +3,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,34 +15,48 @@ import java.util.ArrayList;
 public class ViewEntriesScreen extends JFrame{
 	//Frame Elements
 	JFrame f = new JFrame();
-	JLabel Title = new JLabel("Open this title");
 	JPanel panel = new JPanel();
-	JPanel innerpanel = new JPanel();
-	JLabel bob = new JLabel("Bob");
-	JButton butspawn = new JButton("Turn on");
-	JButton butunder = new JButton("Tester");
 	int i=0;
 	ViewEntriesScreen(DataBaseHelper db){
 		//Layout
-		panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
-		panel.add(butspawn);
-		panel.add(innerpanel);
-		innerpanel.setVisible(false);
+		panel.setLayout(new GridBagLayout());
+		GridBagConstraints gc = new GridBagConstraints();
+		//add in all the panels 
 		ArrayList<JPanel> lister = new ArrayList<>();
+		ArrayList<JLabel> titlelister = new ArrayList<>();
+		titlelister = db.GetTitles();
 		lister =db.GetEntries();
+		final ArrayList<JPanel> listcheck = lister;
+		final ArrayList<JLabel> titlelistCheck = titlelister;
 		while(lister.size()!=i){
-			innerpanel.add(lister.get(i));
+			//add the tile in a panel and then a panel under itt
+			//when clicked find the indexx of the title and then find index of the panel for desc and then pop it up or down
+			gc.gridx=0;
+			gc.gridy=i;
+			gc.anchor = GridBagConstraints.WEST;
+			gc.insets = new Insets(0,0,10,100);
+			JLabel Titler = titlelistCheck.get(i);
+			final JLabel titles = Titler;
+			panel.add(Titler,gc);
+			
+			gc.gridx=0;
+			gc.gridy=i+1;
+			gc.insets = new Insets(10,0,10,10);
+			listcheck.get(i).setVisible(false);
+			panel.add(lister.get(i),gc);
 			i++;
+			Titler.addMouseListener(new MouseAdapter(){
+				public void mouseClicked(MouseEvent e){
+					listcheck.get(titlelistCheck.indexOf(titles)).setVisible(true);
+				}
+			});
 		}
-		panel.add(butunder);
-		butspawn.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				//Open up a add entry screen
-				innerpanel.setVisible(true);
-			}
-		});
-		
-		f.add(panel);
+
+		JPanel master =  new JPanel();
+		master.setBorder(BorderFactory.createTitledBorder(""));
+
+		master.add(panel);
+		f.add(master);
 		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		f.pack();
 		f.setLocationRelativeTo(null);

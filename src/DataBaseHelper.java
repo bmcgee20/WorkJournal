@@ -1,6 +1,7 @@
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -143,7 +144,7 @@ public class DataBaseHelper {
 				GridBagConstraints gc = new GridBagConstraints();
 				int y = 0;
 				gc.anchor = GridBagConstraints.WEST;
-				JLabel WordDesc = new JLabel("<u>Description:</u>");
+				JLabel WordDesc = new JLabel("Description:");
 				gc.gridx=0;
 				gc.gridy=0;
 				panel.add(WordDesc,gc);
@@ -193,6 +194,28 @@ public class DataBaseHelper {
 				PanelList.add(panel);
 			}
 			return PanelList;
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+			return null;
+		}		
+	}
+	
+	public ArrayList<JLabel> GetTitles(){
+		String command = "SELECT * FROM EntryTable WHERE Username = ? ORDER BY time DESC;";
+		ArrayList<JLabel> TitleList = new ArrayList<>();
+		try(Connection conn = this.dbConnector();
+			PreparedStatement state = conn.prepareStatement(command)){
+			state.setString(1, DataBaseHelper.currentUser);
+			ResultSet result = state.executeQuery();
+			String path= this.getClass().getResource("triangle.png").getPath();
+			ImageIcon image = new ImageIcon(new ImageIcon(path).getImage().getScaledInstance(10, 10, Image.SCALE_DEFAULT));
+			
+			while(result.next()){
+				System.out.println("Desc is "+result.getString("Desc"));
+				JLabel TextButton = new JLabel(result.getString("PostTitle"),image,JLabel.LEFT);
+				TitleList.add(TextButton);
+			}
+			return TitleList;
 		}catch(SQLException e){
 			System.out.println(e.getMessage());
 			return null;

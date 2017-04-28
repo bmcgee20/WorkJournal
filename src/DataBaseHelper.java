@@ -185,12 +185,19 @@ public class DataBaseHelper {
 				gc.gridy=y;
 				panel.add(Happy,gc);
 				y++;
-				
-				JLabel Programs = new JLabel("Programming Language Used: "+result.getString("Fulfillment"));
+				if(result.getString("ProgramUsed").length()!=0){
+					JLabel Programs = new JLabel("Programming Language Used: "+result.getString("ProgramUsed"));
+					gc.gridx=0;
+					gc.gridy=y;
+					panel.add(Programs,gc);
+					
+				}
+				JLabel Programs = new JLabel("Programming Language Used: "+result.getString("ProgramUsed"));
 				gc.gridx=0;
 				gc.gridy=y;
 				panel.add(Programs,gc);
-				
+			
+
 				PanelList.add(panel);
 			}
 			return PanelList;
@@ -207,12 +214,11 @@ public class DataBaseHelper {
 			PreparedStatement state = conn.prepareStatement(command)){
 			state.setString(1, DataBaseHelper.currentUser);
 			ResultSet result = state.executeQuery();
-			String path= this.getClass().getResource("triangle.png").getPath();
-			ImageIcon image = new ImageIcon(new ImageIcon(path).getImage().getScaledInstance(10, 10, Image.SCALE_DEFAULT));
+			//ImageIcon image = new ImageIcon(new ImageIcon(path).getImage().getScaledInstance(10, 10, Image.SCALE_DEFAULT));
 			
 			while(result.next()){
 				System.out.println("Desc is "+result.getString("Desc"));
-				JLabel TextButton = new JLabel(result.getString("PostTitle"),image,JLabel.LEFT);
+				JLabel TextButton = new JLabel("• "+result.getString("PostTitle"));
 				TitleList.add(TextButton);
 			}
 			return TitleList;
@@ -221,9 +227,41 @@ public class DataBaseHelper {
 			return null;
 		}		
 	}
-	
+	public ArrayList<String> getTwo(){
+		//return arraylist like this Project, time , project , time //just convert the number to string before it
+		String command = "SELECT * FROM EntryTable WHERE Username = ? ORDER BY time DESC;";
+		ArrayList<String> HourTime = new ArrayList<>();
+		try(Connection conn = this.dbConnector();
+			PreparedStatement state = conn.prepareStatement(command)){
+			state.setString(1, DataBaseHelper.currentUser);
+			ResultSet result = state.executeQuery();
+			
+			while(result.next()){
+				
+				System.out.println("Desc is "+result.getString("Desc"));
+				String projectName = new String(result.getString("ProjectName"));
+				if(!HourTime.contains(projectName)){
+					HourTime.add(projectName);
+					int timer = result.getInt("Hours");
+					String actual = String.valueOf(timer);
+					System.out.println("convert string hours "+actual);
+					HourTime.add(actual);
+				}else{ //if it is already in set increase hours on project
+					int addtime = result.getInt("Hours");
+					int index = HourTime.indexOf(projectName);
+					addtime+=Integer.parseInt(HourTime.get(index));
+					String real = Integer.toString(addtime);
+					HourTime.set(index, real);
+				}
+			}
+			return HourTime;
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+			return null;
+		}	
+	}
 	public Connection getDB(){
 		return conn;
 	}
-	
+
 }

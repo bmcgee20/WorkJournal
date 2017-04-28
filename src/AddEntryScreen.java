@@ -210,7 +210,7 @@ public class AddEntryScreen {
 						FieldTitle.setText(LabTitle.getText());
 					}
 					else{
-						FieldTitle.setText(FieldTitle.getText()+": "+LabTitle.getText());
+						FieldTitle.setText(LabTitle.getText()+" "+FieldTitle.getText());
 					}
 					//db.uploadactivity
 					Date now = new Date();

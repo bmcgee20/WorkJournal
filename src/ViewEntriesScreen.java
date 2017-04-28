@@ -26,36 +26,35 @@ public class ViewEntriesScreen extends JFrame{
 		ArrayList<JLabel> titlelister = new ArrayList<>();
 		titlelister = db.GetTitles();
 		lister =db.GetEntries();
-		final ArrayList<JPanel> listcheck = lister;
-		final ArrayList<JLabel> titlelistCheck = titlelister;
-		while(lister.size()!=i){
+		//System.out.println(titlelister.size());
+		//final ArrayList<JPanel> listcheck = lister;
+		//final ArrayList<JLabel> titlelistCheck = titlelister;
+		int ii=0;
+		while(lister!=null && lister.size()!=i){
 			//add the tile in a panel and then a panel under itt
 			//when clicked find the indexx of the title and then find index of the panel for desc and then pop it up or down
+			//gc.gridx=0;
+			//gc.gridy=ii;
+			//gc.anchor = GridBagConstraints.WEST;
+			//gc.insets = new Insets(0,0,2,0);
+			//panel.add(titlelister.get(i),gc);
+			//ii++;
 			gc.gridx=0;
-			gc.gridy=i;
-			gc.anchor = GridBagConstraints.WEST;
-			gc.insets = new Insets(0,0,10,100);
-			JLabel Titler = titlelistCheck.get(i);
-			final JLabel titles = Titler;
-			panel.add(Titler,gc);
-			
-			gc.gridx=0;
-			gc.gridy=i+1;
+			gc.gridy=ii;
+			//gc.weightx=.5f;
 			gc.insets = new Insets(10,0,10,10);
-			listcheck.get(i).setVisible(false);
+			lister.get(ii).setBorder(BorderFactory.createTitledBorder(titlelister.get(ii).getText()));
 			panel.add(lister.get(i),gc);
+			ii++;
 			i++;
-			Titler.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					listcheck.get(titlelistCheck.indexOf(titles)).setVisible(true);
-				}
-			});
 		}
-
 		JPanel master =  new JPanel();
-		master.setBorder(BorderFactory.createTitledBorder(""));
-
-		master.add(panel);
+		JScrollPane scroll = new JScrollPane(panel);
+		//master.setBorder(BorderFactory.createTitledBorder(""));
+		scroll.setPreferredSize(new Dimension(300,600));
+		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		master.add(scroll);
 		f.add(master);
 		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		f.pack();

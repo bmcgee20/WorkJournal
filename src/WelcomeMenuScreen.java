@@ -37,7 +37,7 @@ public class WelcomeMenuScreen {
 		ButViewData.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				//Open up the view data screen (Charts)
-				
+				ViewDataScreen ViewWindow = new ViewDataScreen();
 			}
 		});
 		//Layout

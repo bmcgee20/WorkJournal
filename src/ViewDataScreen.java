@@ -1,15 +1,8 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.*;
 
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartFrame;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.DefaultCategoryDataset;
 
 public class ViewDataScreen extends JFrame{
 	//charts and stuff
@@ -60,7 +53,6 @@ public class ViewDataScreen extends JFrame{
 				//Open up the view data screen (Charts)
 				if(Hours.isSelected()){
 					Charts chart = new Charts(1);
-					chart.pack();chart.setVisible(true);
 				}else if(fulfill.isSelected()){
 					Charts chart = new Charts(2);
 				}else if(hoursproject.isSelected()){

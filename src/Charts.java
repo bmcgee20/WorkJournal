@@ -1,8 +1,6 @@
 import java.awt.Color;
 import java.util.ArrayList;
-
 import javax.swing.*;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -85,7 +83,7 @@ public class Charts extends JFrame{
 				i++;
 				int hours = Integer.parseInt(((FullPairs.get(i))));
 				i++;
-				//System.out.println("Project "+ProjName+"  Full: "+Fullfill);
+				System.out.println("Hours "+hours+"  Date: "+Date);
 				dataset.setValue(hours, "Hours", Date); //value, y axis, x axis
 			}
 			JFreeChart chart = ChartFactory.createLineChart("Hours Per Day Over Time", "Date", "Hours", dataset, PlotOrientation.VERTICAL, false, true, false);
@@ -107,7 +105,7 @@ public class Charts extends JFrame{
 				i++;
 				int happy = Integer.parseInt(((FullPairs.get(i))));
 				i++;
-				//System.out.println("Project "+ProjName+"  Full: "+Fullfill);
+				System.out.println("happy "+happy+"  Date: "+Date);
 				dataset.setValue(happy, "Fulfillment", Date); //value, y axis, x axis
 			}
 			JFreeChart chart = ChartFactory.createLineChart("Fulfillment Over Time", "Date", "Fulfillment", dataset, PlotOrientation.VERTICAL, false, true, false);

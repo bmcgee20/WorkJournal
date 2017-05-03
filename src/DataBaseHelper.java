@@ -187,18 +187,13 @@ public class DataBaseHelper {
 				panel.add(Happy,gc);
 				y++;
 				if(result.getString("ProgramUsed").length()!=0){
-					JLabel Programs = new JLabel("Programming Language Used: "+result.getString("ProgramUsed"));
+					System.out.println(result.getString("ProgramUsed").length()+"Length");
+					JLabel Programs = new JLabel("Programs Used: "+result.getString("ProgramUsed"));
 					gc.gridx=0;
 					gc.gridy=y;
 					panel.add(Programs,gc);
 					
 				}
-				JLabel Programs = new JLabel("Programming Language Used: "+result.getString("ProgramUsed"));
-				gc.gridx=0;
-				gc.gridy=y;
-				panel.add(Programs,gc);
-			
-
 				PanelList.add(panel);
 			}
 			return PanelList;
@@ -335,9 +330,10 @@ public class DataBaseHelper {
 					//get time
 					String EpochTime = new String(result.getString("Time"));
 					//convert
-					SimpleDateFormat dater = new SimpleDateFormat("dd/MM");
-					String realDate = dater.format(new Date(Long.valueOf(EpochTime)));
-					System.out.println("Date is "+realDate);
+					long epoch = Long.parseLong(EpochTime);
+					SimpleDateFormat dater = new SimpleDateFormat("MM/dd");
+					String realDate = new String(dater.format(new Date(epoch)));
+					System.out.println("Date is "+realDate +"  "+ EpochTime);
 					Lister.add(realDate);
 					//add value of fulfillment or Hours both of which are ints 
 					int queryvalue = (result.getInt(query));

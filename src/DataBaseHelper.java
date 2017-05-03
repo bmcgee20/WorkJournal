@@ -3,6 +3,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -227,34 +228,124 @@ public class DataBaseHelper {
 			return null;
 		}		
 	}
-	public ArrayList<String> getTwo(){
+	public ArrayList<String> getHoursVsTime(){
 		//return arraylist like this Project, time , project , time //just convert the number to string before it
-		String command = "SELECT * FROM EntryTable WHERE Username = ? ORDER BY time DESC;";
+		String command = "SELECT * FROM EntryTable WHERE Username = ? ORDER BY ProjectName ASC;";
 		ArrayList<String> HourTime = new ArrayList<>();
 		try(Connection conn = this.dbConnector();
 			PreparedStatement state = conn.prepareStatement(command)){
 			state.setString(1, DataBaseHelper.currentUser);
 			ResultSet result = state.executeQuery();
-			
-			while(result.next()){
-				
-				System.out.println("Desc is "+result.getString("Desc"));
-				String projectName = new String(result.getString("ProjectName"));
-				if(!HourTime.contains(projectName)){
-					HourTime.add(projectName);
-					int timer = result.getInt("Hours");
-					String actual = String.valueOf(timer);
-					System.out.println("convert string hours "+actual);
-					HourTime.add(actual);
-				}else{ //if it is already in set increase hours on project
-					int addtime = result.getInt("Hours");
-					int index = HourTime.indexOf(projectName);
-					addtime+=Integer.parseInt(HourTime.get(index));
-					String real = Integer.toString(addtime);
-					HourTime.set(index, real);
-				}
+			if(!result.next()){
 			}
+			else{
+				do{ //cause it needs to add last index of result set
+					
+					System.out.println("Proj is "+result.getString("ProjectName"));
+					String projectName = new String(result.getString("ProjectName"));
+					if(!HourTime.contains(projectName)){ //if the project is not already added add it
+						System.out.println("Adding "+projectName);
+						HourTime.add(projectName);
+						int timer = result.getInt("Hours");
+						String actual = String.valueOf(timer);
+						System.out.println("convert string hours "+actual);
+						HourTime.add(actual);
+					}else{ //if it is already in set increase hours on project
+						System.out.println("Already exist "+ projectName);
+						int addtime = result.getInt("Hours");
+						int index = HourTime.indexOf(projectName);
+						addtime+=Integer.parseInt(HourTime.get(index+1));
+						String real = Integer.toString(addtime);
+						HourTime.set(index+1, real);
+					}
+				}
+				while(result.next());
+			}
+
+			
 			return HourTime;
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+			return null;
+		}	
+	}
+	public ArrayList<String> getProjectVsFulfillment(){
+		//return arraylist like this Project, time , project , time //just convert the number to string before it
+		String command = "SELECT * FROM EntryTable WHERE Username = ? ORDER BY ProjectName ASC;";
+		ArrayList<String> FullProj = new ArrayList<>();
+		try(Connection conn = this.dbConnector();
+			PreparedStatement state = conn.prepareStatement(command)){
+			state.setString(1, DataBaseHelper.currentUser);
+			ResultSet result = state.executeQuery();
+			int AmountOfProjectInstances= 0; //keeps up with the average
+			float InstanceAvg=0;
+			//get a list with the current average, counts of it   reset everytime it hits a new project
+			if(!result.next()){
+			}
+			else{
+				do{ //cause it needs to add last index of result set
+					
+					System.out.println("Proj is "+result.getString("ProjectName"));
+					String projectName = new String(result.getString("ProjectName"));
+					if(!FullProj.contains(projectName)){ //if the project is not already added add it
+						System.out.println("Adding "+projectName);
+						FullProj.add(projectName);
+						float happy = result.getFloat("Fulfillment");
+						String actual = String.valueOf(happy);
+						FullProj.add(actual);
+						AmountOfProjectInstances=1; //reset these values
+						InstanceAvg = happy;
+						
+					}else{ //if it is already in set increase hours on project
+						float happy = result.getFloat("Fulfillment");
+						int index = FullProj.indexOf(projectName);
+						//FullProj.set(index, real);
+						AmountOfProjectInstances++;
+						InstanceAvg = (((InstanceAvg*(AmountOfProjectInstances-1)))+happy)/AmountOfProjectInstances;
+						FullProj.set(index+1, Float.toString(InstanceAvg));
+					}
+				}
+				while(result.next());
+			}
+
+			
+			return FullProj;
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+			return null;
+		}	
+	}
+	
+	//Method to get Hours and fulfillment vs time
+	
+	//convert epoch time to date format for the lister and do  ///Hours or Happy///Time///
+	public ArrayList<String> getHoursAndHappy(String query){ //give happy or hours as query
+		//return arraylist like this Project, time , project , time //just convert the number to string before it
+		String command = "SELECT * FROM EntryTable WHERE Username = ? ORDER BY Time ASC;";
+		ArrayList<String> Lister = new ArrayList<>();
+		try(Connection conn = this.dbConnector();
+			PreparedStatement state = conn.prepareStatement(command)){
+			state.setString(1, DataBaseHelper.currentUser);
+			ResultSet result = state.executeQuery();
+			
+			if(!result.next()){
+			}
+			else{
+				do{ //cause it needs to add last index of result set
+					//get time
+					String EpochTime = new String(result.getString("Time"));
+					//convert
+					SimpleDateFormat dater = new SimpleDateFormat("dd/MM");
+					String realDate = dater.format(new Date(Long.valueOf(EpochTime)));
+					System.out.println("Date is "+realDate);
+					Lister.add(realDate);
+					//add value of fulfillment or Hours both of which are ints 
+					int queryvalue = (result.getInt(query));
+					Lister.add(String.valueOf(queryvalue));
+				}
+				while(result.next());
+			}
+			return Lister;
 		}catch(SQLException e){
 			System.out.println(e.getMessage());
 			return null;

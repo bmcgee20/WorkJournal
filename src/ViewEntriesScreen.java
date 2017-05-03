@@ -26,19 +26,8 @@ public class ViewEntriesScreen extends JFrame{
 		ArrayList<JLabel> titlelister = new ArrayList<>();
 		titlelister = db.GetTitles();
 		lister =db.GetEntries();
-		//System.out.println(titlelister.size());
-		//final ArrayList<JPanel> listcheck = lister;
-		//final ArrayList<JLabel> titlelistCheck = titlelister;
 		int ii=0;
 		while(lister!=null && lister.size()!=i){
-			//add the tile in a panel and then a panel under itt
-			//when clicked find the indexx of the title and then find index of the panel for desc and then pop it up or down
-			//gc.gridx=0;
-			//gc.gridy=ii;
-			//gc.anchor = GridBagConstraints.WEST;
-			//gc.insets = new Insets(0,0,2,0);
-			//panel.add(titlelister.get(i),gc);
-			//ii++;
 			gc.gridx=0;
 			gc.gridy=ii;
 			//gc.weightx=.5f;

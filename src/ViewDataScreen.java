@@ -4,12 +4,17 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 public class ViewDataScreen extends JFrame{
 	//charts and stuff
 	JFrame f = new JFrame();
-	JRadioButton Hours = new JRadioButton("Hours per week",true);
+	JRadioButton Hours = new JRadioButton("Hours over time",true);
 	JRadioButton fulfill = new JRadioButton("Fulfillment over time");
 	JRadioButton hoursproject = new JRadioButton("Hours on projects");
 	JRadioButton avgful = new JRadioButton("Fulfillment on projects");
@@ -54,15 +59,14 @@ public class ViewDataScreen extends JFrame{
 			public void actionPerformed(ActionEvent e){
 				//Open up the view data screen (Charts)
 				if(Hours.isSelected()){
-					System.out.println("One");
 					Charts chart = new Charts(1);
 					chart.pack();chart.setVisible(true);
 				}else if(fulfill.isSelected()){
-					System.out.println("Two");
+					Charts chart = new Charts(2);
 				}else if(hoursproject.isSelected()){
-					System.out.println("Three");
+					Charts chart = new Charts(3);
 				}else if(avgful.isSelected()){
-					System.out.println("Four");
+					Charts chart = new Charts(4);
 				}
 			}
 		});

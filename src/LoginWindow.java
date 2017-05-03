@@ -29,17 +29,7 @@ public class LoginWindow extends JFrame{
 
 	
 	LoginWindow(){
-
-
-		/*try { 
-		    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e) {
-		    e.printStackTrace();
-		}
-		*/
-		//DB
 		db.conn = db.dbConnector();
-		
 		
 		panel.setBorder(BorderFactory.createTitledBorder("Login Info"));
 		//Listeners
@@ -158,8 +148,7 @@ public class LoginWindow extends JFrame{
 		    }
 		} catch (Exception e) {
 			System.out.println("Could not find Nimbus will just use default");
-		}
-	
+		}	
 		SwingUtilities.invokeLater(new Runnable(){//just needed for swing
 			public void run(){
 				new LoginWindow();

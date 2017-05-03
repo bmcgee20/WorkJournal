@@ -16,7 +16,6 @@ public class DataBaseHelper {
 		try{
 			Class.forName("org.sqlite.JDBC");
 			String path=this.getClass().getResource("JavaDB.db").getPath();
-			//System.out.println(path);
 			path = path.replaceAll("/","\\\\\\\\"); //puts url in right format
 			path = path.substring(2); 
 			System.out.println(path);
@@ -24,7 +23,6 @@ public class DataBaseHelper {
 			//System.out.println(path);
 			conn = DriverManager.getConnection("jdbc:sqlite:"+path);
 			LoginWindow.LabError.setText("We are connected");
-			//System.out.println("Ehllo");
 			return conn;
 		}catch(Exception e){
 			JOptionPane.showMessageDialog(null, e);
@@ -162,6 +160,7 @@ public class DataBaseHelper {
 				//JLabel Desc = new JLabel(result.getString("Desc"));
 				JTextArea Desc = new JTextArea(2,20);
 				Desc.setText(result.getString("Desc"));
+				//Desc.setOpaque(false);
 				JScrollPane DescScroll = new JScrollPane(Desc);
 				Desc.setWrapStyleWord(true);
 				Desc.setEditable(false);
@@ -183,6 +182,7 @@ public class DataBaseHelper {
 					JTextField Issues = new JTextField(20);
 					Issues.setText(result.getString("Issues"));
 					Issues.setEditable(false);
+					//Issues.setOpaque(false);
 					gc.insets = new Insets(5,5,0,2);
 					gc.gridx=0;
 					gc.gridy=y;
@@ -215,6 +215,7 @@ public class DataBaseHelper {
 					
 					JTextField Programming = new JTextField(20);
 					Programming.setText(result.getString("ProgramUsed"));
+					//Programming.setOpaque(false);
 					gc.gridx = 0;
 					gc.anchor = GridBagConstraints.WEST;
 					gc.gridy=y;

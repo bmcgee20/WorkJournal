@@ -35,6 +35,7 @@ public class ViewEntriesScreen extends JFrame{
 		scroll.setPreferredSize(new Dimension(300,600));
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		
 		master.add(scroll);
 		f.add(master);
 		f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

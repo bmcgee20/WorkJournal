@@ -2,6 +2,7 @@
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -139,59 +140,86 @@ public class DataBaseHelper {
 			ResultSet result = state.executeQuery();
 			
 			while(result.next()){//make panels for each result
+				
 				System.out.println("Desc is "+result.getString("Desc"));
 				JPanel panel = new JPanel();
 				panel.setLayout(new GridBagLayout());
 				GridBagConstraints gc = new GridBagConstraints();
 				int y = 0;
-				gc.anchor = GridBagConstraints.WEST;
-				JLabel WordDesc = new JLabel("Description:");
-				gc.gridx=0;
-				gc.gridy=0;
-				panel.add(WordDesc,gc);
-
-				JLabel Desc = new JLabel(result.getString("Desc"));
-				gc.gridx=0;
-				gc.gridy=1;
-				panel.add(Desc,gc);
-				
-				y=2;
-				if(result.getString("Issues").length()!=0){ //check if not mandatory field are put in
-					JLabel Iss = new JLabel("Issues:");
-					gc.gridx=0;
-					gc.gridy=2;
-					panel.add(Iss,gc);
-					
-					JLabel Issues = new JLabel(result.getString("Issues"));
-					gc.gridx=0;
-					gc.gridy=3;
-					panel.add(Issues,gc);
-					y=4; //change the grid height dynamically based on what it added or not
-				}
-				
 				JLabel Project = new JLabel("Project: " +result.getString("ProjectName"));
+				gc.insets = new Insets(5,0,5,0);
 				gc.gridx=0;
 				gc.gridy=y;
 				panel.add(Project,gc);
 				y++;
+				gc.anchor = GridBagConstraints.WEST;
+				JLabel WordDesc = new JLabel("Description:");
+				gc.gridx=0;
+				gc.gridy=y;
+				panel.add(WordDesc,gc);
+				y++;
+				
+				//JLabel Desc = new JLabel(result.getString("Desc"));
+				JTextArea Desc = new JTextArea(2,20);
+				Desc.setText(result.getString("Desc"));
+				JScrollPane DescScroll = new JScrollPane(Desc);
+				Desc.setWrapStyleWord(true);
+				Desc.setEditable(false);
+				Desc.setLineWrap(true);
+				DescScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+				gc.insets = new Insets(5,5,0,2);
+				gc.gridx=0;
+				gc.gridy=y;
+				panel.add(DescScroll,gc);
+				y++;
+				
+				if(result.getString("Issues").length()!=0){ //check if not mandatory field are put in
+					JLabel Iss = new JLabel("Issues:");
+					gc.gridx=0;
+					gc.gridy=y;
+					panel.add(Iss,gc);
+					y++;
+					
+					JTextField Issues = new JTextField(20);
+					Issues.setText(result.getString("Issues"));
+					Issues.setEditable(false);
+					gc.insets = new Insets(5,5,0,2);
+					gc.gridx=0;
+					gc.gridy=y;
+					panel.add(Issues,gc);
+					y++; //change the grid height dynamically based on what it added or not
+				}
+				
+
 				
 				JLabel Hours = new JLabel("Hours: "+ result.getString("Hours"));
 				gc.gridx=0;
 				gc.gridy=y;
+				gc.insets = new Insets(0,0,5,0);
 				panel.add(Hours,gc);
 				y++;
 				
 				JLabel Happy = new JLabel("Fulfillment: "+result.getInt("Fulfillment"));
 				gc.gridx=0;
 				gc.gridy=y;
+				gc.insets = new Insets(0,0,5,0);
 				panel.add(Happy,gc);
 				y++;
 				if(result.getString("ProgramUsed").length()!=0){
 					System.out.println(result.getString("ProgramUsed").length()+"Length");
-					JLabel Programs = new JLabel("Programs Used: "+result.getString("ProgramUsed"));
+					JLabel Programs = new JLabel("Programs Used:");
 					gc.gridx=0;
 					gc.gridy=y;
 					panel.add(Programs,gc);
+					y++;
+					
+					JTextField Programming = new JTextField(20);
+					Programming.setText(result.getString("ProgramUsed"));
+					gc.gridx = 0;
+					gc.anchor = GridBagConstraints.WEST;
+					gc.gridy=y;
+					
+					panel.add(Programming,gc);
 					
 				}
 				PanelList.add(panel);

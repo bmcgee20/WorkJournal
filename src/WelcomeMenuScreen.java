@@ -29,7 +29,7 @@ public class WelcomeMenuScreen {
 		ButViewEntry.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				//Open up the view entry screen
-				f.setVisible(false);
+				//f.setVisible(false);
 				ViewEntriesScreen EntryWindow = new ViewEntriesScreen(db);
 						
 			}

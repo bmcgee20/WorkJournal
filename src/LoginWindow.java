@@ -3,15 +3,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
 
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -20,6 +12,10 @@ import java.sql.*;
 
 public class LoginWindow extends JFrame{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	static JFrame f = new JFrame("Work Journal");
 	JPanel panel = new JPanel();
 	JLabel LabUsername = new JLabel("Username: ");

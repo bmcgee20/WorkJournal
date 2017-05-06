@@ -9,7 +9,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 
-public class Charts extends JFrame{
+public class Charts{
 	DataBaseHelper db= new DataBaseHelper();
 	
 	Charts(int type){ //1-4 based on radiobutton

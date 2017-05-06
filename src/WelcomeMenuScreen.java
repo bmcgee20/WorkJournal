@@ -21,8 +21,13 @@ public class WelcomeMenuScreen {
 		ButAddEntry.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				//Open up a add entry screen
-				f.setVisible(false);
-				AddEntryScreen AddDataWindow = new AddEntryScreen();
+				if(db.CheckIfEntryToday()==false){ //there was no entry today
+					f.setVisible(false);
+					AddEntryScreen AddDataWindow = new AddEntryScreen();
+				}
+				else{ //if there was an entry dont let them add any more
+					JOptionPane.showMessageDialog(null, "You have already submitted an entry for the day");
+				}
 			}
 		});
 

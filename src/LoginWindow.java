@@ -13,7 +13,7 @@ import java.sql.*;
 public class LoginWindow extends JFrame{
 
 	/**
-	 * 
+	 * Attributes
 	 */
 	private static final long serialVersionUID = 1L;
 	static JFrame f = new JFrame("Work Journal");

@@ -234,6 +234,9 @@ public class AddEntryScreen {
 		}else if(FieldHours.getText().length()==0){
 			Error("Hours not filled out");
 			return false;
+		}else if(!(FieldHours.getText().length()<=2) || (Integer.parseInt((FieldHours.getText()))>24)){
+			Error("Hours on a event cannot exceed 24 hours");
+			return false;
 		}
 		return true;
 	}

@@ -6,6 +6,7 @@ import java.awt.Insets;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.*;
 
@@ -16,6 +17,7 @@ public class DataBaseHelper {
 		try{
 			Class.forName("org.sqlite.JDBC");
 			String path=this.getClass().getResource("JavaDB.db").getPath();
+			//DataBaseHelper.class.getResourceAsStream("JavaDB.db");
 			path = path.replaceAll("/","\\\\\\\\"); //puts url in right format
 			path = path.substring(2); 
 			System.out.println(path);
@@ -232,7 +234,7 @@ public class DataBaseHelper {
 		}		
 	}
 	
-	public ArrayList<JLabel> GetTitles(){
+	public ArrayList<JLabel> GetTitles(){//get list of titles from user to set panel title for view entries
 		String command = "SELECT * FROM EntryTable WHERE Username = ? ORDER BY time DESC;";
 		ArrayList<JLabel> TitleList = new ArrayList<>();
 		try(Connection conn = this.dbConnector();
@@ -376,8 +378,37 @@ public class DataBaseHelper {
 			return null;
 		}	
 	}
-	public Connection getDB(){
-		return conn;
+	
+	//makes sure they dont add more than one entry per day, returns true if the user added a entry today
+	public Boolean CheckIfEntryToday(){ 
+		String command = "SELECT * FROM EntryTable WHERE Username = ? ORDER BY Time DESC;";
+		ArrayList<String> Lister = new ArrayList<>();
+		try(Connection conn = this.dbConnector();
+			PreparedStatement state = conn.prepareStatement(command)){
+			state.setString(1, DataBaseHelper.currentUser);
+			ResultSet result = state.executeQuery();
+			
+			if(result.next()){ //if their is no entries at all assume false
+				String EpochTime = new String(result.getString("Time"));
+				//convert
+				long epoch = Long.parseLong(EpochTime);
+				SimpleDateFormat dater = new SimpleDateFormat("MM/dd");
+				String realDate = new String(dater.format(new Date(epoch)));
+				SimpleDateFormat dateForm = new SimpleDateFormat("MM/dd");
+				String date = dateForm.format(new Date());
+				if(date.equals(realDate)){
+					System.out.println(date+realDate);
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+			return false;
+		}catch(SQLException e){
+			System.out.println(e.getMessage());
+			return true;
+		}	
 	}
 
 }

@@ -9,7 +9,9 @@ How to run the project:
 		d) Project folder should show up in the IDE
 	3) Run the program from eclipse
 		a) Code is in Project_4->src->(default package)->[class files here]
-		b) Database referenced is in Project_4->src->JavaDB.db
+		b) Open the LoginWindow class then run it. (Otherwise it may open the demo jar required for JFreeChart)
+			If it opens a growth chart over time with a window title of JFreeChart: Annotation this is the JFreeChart demo jar and not my program.
+		c) Database referenced is in Project_4->src->JavaDB.db
 	
 Testing the Program:
 	1) Just use the default login for testing
@@ -17,9 +19,9 @@ Testing the Program:
 	3) View that entry and past entries under "View Entries"
 	4) View data from those under the "View Data" button
 
-Works of Warning: 
+Words of Warning: 
 	1) After testing out the program with the default login feel free to make a new account and test the login.	
-		The only reason I say to use the default is cause only one entry can be added per day so using the default
+		The only reason I say to use the default is because only one entry can be added per day so using the default
 		login gives you more than one entry to view the charts on.
 	2) Only one entry can be added a day per user.
 	3) The reason I say to run it in eclipse is so you can use the database that already is filled with values for testing

@@ -1,3 +1,6 @@
+
+This is a work journal program created using Java and Swing to create a desktop application that lets you enter in work data and see statistics about what you enter.
+
 Work Journal Program Testing and Installation Instructions:
 
 How to run the project:
@@ -18,11 +21,3 @@ Testing the Program:
 	2) Add an entry for the day after logging in
 	3) View that entry and past entries under "View Entries"
 	4) View data from those under the "View Data" button
-
-Words of Warning: 
-	1) After testing out the program with the default login feel free to make a new account and test the login.	
-		The only reason I say to use the default is because only one entry can be added per day so using the default
-		login gives you more than one entry to view the charts on.
-	2) Only one entry can be added a day per user.
-	3) The reason I say to run it in eclipse is so you can use the database that already is filled with values for testing
-		if it was in a jar it would make a new database and it would take a couple days of entries to be useful.
